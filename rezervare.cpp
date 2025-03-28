@@ -14,7 +14,7 @@ public:
 };
 
 class Rezervare : public IRezervare {
-protected:
+public:
     string numeClient;
     string dataOra;
     int nrPersoane;
@@ -43,33 +43,28 @@ public:
     virtual string getTip() const override { 
         return "Rezervare"; 
     }
+    
+    string getNumeClient() { return numeClient; }
+    
+    string getdataOra() { return dataOra;}
+    
+    int getnrPersoane() { return nrPersoane;}
 
     virtual ~Rezervare() {}
-
-    void afisareInfo() const {
-        
-        cout << "Tip: " << getTip() << endl;
-        cout << "Client: " << numeClient << endl;
-        cout << "Data si ora: " << dataOra << endl;
-        cout << "Numar persoane: " << nrPersoane << endl;
-        cout << "Durata: " << calculeazaDurata() << " ore" << endl;
-        cout << "Pret total: " << calculeazaPret() << " lei" << endl;
-        cout << "------------------------------" << endl;
-    }
 };
 
-class RezervareZilnica : public Rezervare {
+class Zilnica : public Rezervare {
 public:
     int calculeazaPret() const override {
         return nrPersoane <= 2 ? 50 : 50 + (nrPersoane - 2) * 20;
     }
 
     string getTip() const override { 
-        return "Rezervare Zilnica"; 
+        return "Zilnica"; 
     }
 };
 
-class RezervareEvenimentSpecial : public Rezervare {
+class EvenimentSpecial : public Rezervare {
 private:
     int oreSuplimentare = 0;
 
@@ -87,31 +82,43 @@ public:
     }
 
     string getTip() const override { 
-        return "Rezervare Eveniment Special"; 
+        return "Eveniment Special"; 
     }
 };
 
-class RezervareGrupMare : public Rezervare {
+class GrupMare : public Rezervare {
 public:
     int calculeazaPret() const override {
         return nrPersoane <= 20 ? 500 : 500 + (nrPersoane - 20) * 10;
     }
 
     string getTip() const override { 
-        return "Rezervare Grup Mare"; 
+        return "Grup Mare"; 
     }
 };
 
-class RezervareVIP : public Rezervare {
+class VIP : public Rezervare {
 public:
     int calculeazaPret() const override {
         return nrPersoane <= 5 ? 1000 : 1000 + (nrPersoane - 5) * 50;
     }
 
     string getTip() const override { 
-        return "Rezervare VIP"; 
+        return "VIP"; 
     }
 };
+
+void afisareInfo(vector<Rezervare*> rezervari){
+    cout << "Tip\t\t" << "Client\t\t" << "DataOra\t\t\t" << "Nr persoane\t\t" << "Durata\t\t" << "Pret total\t\t" << endl;
+    cout << "----------------------------------------------------------------------------------------------------------------------------------" << endl;
+    int count = 1;
+    for(auto rezervare : rezervari)
+    {
+        cout << count << ". " << rezervare->getTip() << "\t" << rezervare->getNumeClient() << "\t\t" << rezervare->getdataOra() << "\t" <<
+        rezervare->getnrPersoane() << "\t\t\t" << rezervare->calculeazaDurata() << "\t\t" << rezervare->calculeazaPret() << endl;
+        count++;
+    }
+}
 
 int main() {
     const string path = "rezervari.txt";
@@ -128,38 +135,32 @@ int main() {
     while (fin >> tipRezervare >> numeClient >> dataOra >> nrPersoane) {
         Rezervare* rezervare = nullptr;
 
-        if (tipRezervare == "RezervareZilnica") {
-            rezervare = new RezervareZilnica();
-        } else if (tipRezervare == "RezervareEvenimentSpecial") {
+        if (tipRezervare == "Zilnica") {
+            rezervare = new Zilnica();
+        } else if (tipRezervare == "EvenimentSpecial") {
             int oreSuplimentare;
             if (!(fin >> oreSuplimentare)) {
-                cout << "Date insuficiente pentru RezervareEvenimentSpecial!" << endl;
+                cout << "Date insuficiente pentru Eveniment Special!" << endl;
                 break;
             }
-            RezervareEvenimentSpecial* rezEveniment = new RezervareEvenimentSpecial();
+            EvenimentSpecial* rezEveniment = new EvenimentSpecial();
             rezEveniment->setOreSuplimentare(oreSuplimentare);
             rezervare = rezEveniment;
-        } else if (tipRezervare == "RezervareGrupMare") {
-            rezervare = new RezervareGrupMare();
-        } else if (tipRezervare == "RezervareVIP") {
-            rezervare = new RezervareVIP();
-        } else {
-            cout << "Tip rezervare necunoscut: " << tipRezervare << endl;
-            continue;
-        }
+        } else if (tipRezervare == "GrupMare") {
+            rezervare = new GrupMare();
+        } else if (tipRezervare == "VIP") {
+            rezervare = new VIP();
+        } 
 
         rezervare->setNumeClient(numeClient);
         rezervare->setDataOra(dataOra);
         rezervare->setNrPersoane(nrPersoane);
         rezervari.push_back(rezervare);
     }
-
+    
+    afisareInfo(rezervari);
+    
     fin.close();
-
-    for (auto r : rezervari) {
-        r->afisareInfo();
-        delete r;
-    }
 
     return 0;
 }
