@@ -46,6 +46,10 @@ public:
 
     // Vizualizare tranzacții
     void vizualizeazaTranzactii() {
+        if (tranzactii.empty()) {
+        cout << "Nu aveti tranzactii.\n"; // Vrode ba lucreaza
+        return;
+    }
         cout << "\nIstoric tranzactii pentru contul " << id << ":\n";
         for (const auto &tranzactie : tranzactii)
             cout << tranzactie << endl;
@@ -141,6 +145,8 @@ void registerUser() {
     conturi.push_back(c);
     saveData();
     cout << "Cont creat cu succes!\n";
+    cout << "Apasati ceva pentru a continua..";
+    cin.get();
     system("clear");
 }
 
@@ -235,7 +241,7 @@ void transfer(Cont* user) {
 // Operație de verificare a soldului
 void viewBalance(Cont* user) {
     cout << "Soldul curent: " << user->sold << "\n";
-    cout << "Apasati Enter pentru a continua...";
+    cout << "Apasati ceva pentru a continua...";
     cin.ignore();
     cin.get();
     system("clear");
@@ -249,6 +255,7 @@ void viewTransactions(Cont* user) {
     cin.get();
     system("clear");
 }
+
 
 // Operație de blocare (ștergere) a contului
 void blockAccount(Cont* user) {
@@ -265,9 +272,9 @@ void blockAccount(Cont* user) {
     cout << "Esti precis? da ori nu: ";
     getline (cin, confirmare);
     
-    if (confirmare != "da") {
+    if (confirmare != "da" && confirmare != "Da" && confirmare != "DA") {
     cout << "Ladna anulare\n";
-    cout << "Apasati Enter pentru a continua..";
+    cout << "Apasati ceva pentru a continua..";
     cin.get();
     system("clear");
  
@@ -285,6 +292,8 @@ void blockAccount(Cont* user) {
     }
     saveData();
     cout << "Cont blocat si sters!\n";
+    cout << "Apasati ceva pentru a continua..";
+    cin.get();
     system("clear");
 }
 
