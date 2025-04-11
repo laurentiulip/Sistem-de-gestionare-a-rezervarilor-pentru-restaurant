@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 using namespace std;
 
 class Cont {
@@ -59,10 +60,11 @@ public:
 // Vector pentru gestionarea conturilor
 vector<Cont*> conturi;
 
-// Funcție pentru "curățarea" consolei prin afișarea unui număr mare de linii noi
-void clearConsole() {
-    cout << string(100, '\n');
-}
+// // Funcție pentru "curățarea" consolei prin afișarea unui număr mare de linii noi
+//  void clearConsole() {
+//      cout << string(100, '\n');
+// }
+
 
 // Salvarea datelor în fișier
 void saveData() {
@@ -139,7 +141,7 @@ void registerUser() {
     conturi.push_back(c);
     saveData();
     cout << "Cont creat cu succes!\n";
-    clearConsole();
+    system("clear");
 }
 
 // Funcție de autentificare
@@ -173,7 +175,7 @@ void deposit(Cont* user) {
     user->depuneBani(suma);
     saveData();
     cout << "Suma depusa cu succes!\n";
-    clearConsole();
+    system("clear");
 }
 
 // Operație de retragere
@@ -186,7 +188,6 @@ void withdraw(Cont* user) {
         cout << "Parola incorecta!\n";
         return;
     }
-    return;
     
     float suma;
     cout << "Introduceti suma de retras: ";
@@ -197,7 +198,7 @@ void withdraw(Cont* user) {
     } else {
         cout << "Fonduri insuficiente!\n";
     }
-    clearConsole();
+    system("clear");
 }
 
 // Operație de transfer între conturi
@@ -228,7 +229,7 @@ void transfer(Cont* user) {
     } else {
         cout << "Fonduri insuficiente pentru transfer!\n";
     }
-    clearConsole();
+    system("clear");
 }
 
 // Operație de verificare a soldului
@@ -237,7 +238,7 @@ void viewBalance(Cont* user) {
     cout << "Apasati Enter pentru a continua...";
     cin.ignore();
     cin.get();
-    clearConsole();
+    system("clear");
 }
 
 // Operație de vizualizare a tranzacțiilor
@@ -246,7 +247,7 @@ void viewTransactions(Cont* user) {
     cout << "Apasati Enter pentru a continua...";
     cin.ignore();
     cin.get();
-    clearConsole();
+    system("clear");
 }
 
 // Operație de blocare (ștergere) a contului
@@ -266,7 +267,10 @@ void blockAccount(Cont* user) {
     
     if (confirmare != "da") {
     cout << "Ladna anulare\n";
-    return;
+    cout << "Apasati Enter pentru a continua..";
+    cin.get();
+    system("clear");
+ 
     }
     
     int id = user->id;
@@ -281,7 +285,7 @@ void blockAccount(Cont* user) {
     }
     saveData();
     cout << "Cont blocat si sters!\n";
-    clearConsole();
+    system("clear");
 }
 
 int main() {
@@ -328,14 +332,14 @@ int main() {
                     break;
                 } else {
                     cout << "Optiune invalida!\n";
-                    clearConsole();
+                    system("clear");
                 }
             }
         } else if (opt == 3) {
             break;
         } else {
             cout << "Optiune invalida!\n";
-            clearConsole();
+                system("clear");
         }
     }
     
